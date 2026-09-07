@@ -1,0 +1,25 @@
+name: SONOXO Local Stack Smoke
+
+on:
+  pull_request:
+    paths:
+      - "scripts/sonoxo-local.sh"
+      - "docker-compose.yml"
+      - ".github/workflows/sonoxo-local-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate bootstrap shell
+        run: bash -n scripts/sonoxo-local.sh
+
+      - name: Validate Compose model
+        run: docker compose config --quiet
